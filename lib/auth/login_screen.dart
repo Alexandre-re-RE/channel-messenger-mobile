@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:channel_messenger_mobile/app/chat_screen.dart';
+import 'package:channel_messenger_mobile/messenger_api.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../components/primary_button.dart';
 import '../constants.dart';
@@ -21,6 +26,15 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailInputController.dispose();
     _passwordInputController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      _emailInputController.text = "webmaster@alexandre.re";
+      _passwordInputController.text = "alexandre";
+    });
+    super.initState();
   }
 
   @override
@@ -94,19 +108,20 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(margin: EdgeInsets.only(top: 20)),
               PrimaryButton(
                 text: "Se connecter",
-                press: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ChatScreen(),
-                  ),
-                ),
+                press: () async {
+                  bool isAuth = await login(
+                      email: _emailInputController.text,
+                      password: _passwordInputController.text);
+
+                  if (isAuth) {
+                    final box = GetStorage();
+                    box.write('email', _emailInputController.text);
+                    box.write('password', _passwordInputController.text);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => ChatScreen()));
+                  }
+                },
               ),
-              // const SizedBox(height: kDefaultPadding * 1.5),
-              // PrimaryButton(
-              //   color: Theme.of(context).colorScheme.secondary,
-              //   text: "Sign Up",
-              //   press: () {},
-              // ),
               const Spacer(flex: 2),
             ],
           ),

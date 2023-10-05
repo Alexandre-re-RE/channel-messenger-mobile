@@ -10,3 +10,5 @@ const kErrorColor = Color(0xFFF03738);
 const kDefaultPadding = 20.0;
 const appBarTheme = AppBarTheme(centerTitle: false, elevation: 0);
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+const AppUrl = "http://10.0.2.2:32919";

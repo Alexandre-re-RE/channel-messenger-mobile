@@ -1,12 +1,15 @@
 import 'package:channel_messenger_mobile/app/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'app/message_screen.dart';
 import 'auth/login_screen.dart';
 import 'constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -54,6 +57,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return ChatScreen();
+    final box = GetStorage();
+    if (box.hasData("email") && box.hasData("password")) {
+      return ChatScreen();
+    }
+    return LoginScreen();
   }
 }
