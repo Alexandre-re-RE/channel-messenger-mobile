@@ -1,5 +1,6 @@
 import 'package:channel_messenger_mobile/auth/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../constants.dart';
 
@@ -27,6 +28,8 @@ AppBar buildAppBar() {
     actions: [
       IconButton(
           onPressed: () {
+            final box = GetStorage();
+            box.erase();
             Navigator.of(navigatorKey.currentContext!).pushReplacement(
                 MaterialPageRoute(
                     builder: (BuildContext context) => LoginScreen()));
